@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        #map {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 500px;
+            margin: 20px auto;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .station, .user-location {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .station:hover, .station.active {
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+        .station {
+            background-color: #ff6347;
+        }
+        .user-location {
+            background-color: #4682b4; 
+        }
+        .path {
+            position: absolute;
+            width: 2px; 
+            background-color: #32cd32; 
+            z-index: 0;
+            transition: all 0.5s ease;
+        }
+        .label {
+            position: absolute;
+            background-color: #fff;
+            padding: 5px;
+            border: 1px solid #000;
+            border-radius: 5px;
+            font-size: 10px;
+            z-index: 2;
+            transition: opacity 0.3s ease;
+            opacity:1;
+        }
+        .station.active + .label {
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+<h1>Please click on your destination</h1>
+    <div id="map">
+        <div class="user-location" style="top: 10%; left: 50%;" id="userLocation">Your current location</div>
+        <div class="station" style="top: 70%; left: 35%;" id="station1" onclick="activateStation(this, 57, 30)">
+            <div class="label" style="top: 20px; left: 0;">Kitengela</div>
+        </div>
+        <div class="station" style="top:95%; left: 66%;" id="station2" onclick="activateStation(this, 73, 70)">
+            <div class="label" style="top: 20px; left: 0;">Juja</div>
+        </div>
+        <div class="station" style="top:75%; left: 50%;" id="station3" onclick="activateStation(this, 88, 50)">
+            <div class="label" style="top: 20px; left: 0;">Ongata Rongai</div>
+        </div>
+    </div>
+    <script>
+        function activateStation(element, stationTop, stationLeft) {
+            const allStations = document.querySelectorAll('.station');
+            allStations.forEach(stn => stn.classList.remove('active'));
+            element.classList.add('active');
+            drawPath(stationTop, stationLeft);
+        }
+
+        function drawPath(stationTop, stationLeft) {
+            const userTop = 10; 
+            const userLeft = 50; 
+
+            const existingPath = document.querySelector('.path');
+            if (existingPath) existingPath.remove();
+
+            const path = document.createElement('div');
+            path.className = 'path';
+            path.style.top = `${userTop}%`;
+            path.style.left = `${userLeft}%`;
+            path.style.width = `0px`;
+            path.style.height = `4px`;
+            path.style.background = 'green';
+            path.style.position = 'absolute';
+            path.style.transformOrigin = '0 0'; // Origin at the start of the line
+            // Calculate path dimensions and rotation
+            const deltaX = stationLeft - userLeft;
+            const deltaY = stationTop - userTop;
+            const length = Math.sqrt(deltaX * deltaX + deltaY * deltaY) - 10; // Subtract half of station size to end path at center
+            const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+            // Set the path dimensions and rotation
+            path.style.width = `${length}%`; // Set the width to calculated length
+            path.style.transform = `rotate(${angle}deg)`;
+            document.getElementById('map').appendChild(path);
+        }
+    </script>
+</body>
+</html>
