@@ -1,18 +1,45 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Ensure the background covers the entire viewport */
     margin: 0;
-    background-color: #f4f4f4;
 }
 
 .login-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for the login container */
     padding: 20px;
-    background: white;
+    border-radius: 10px;
+    margin: 100px auto; /* Center the login container vertically */
+    max-width: 400px; /* Limit the width of the login container */
+    text-align: center;
+}
+
+.login-container h2 {
+    margin-bottom: 20px;
+}
+
+.login-container form input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
     border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    border: 1px solid #ccc;
+}
+
+.login-container form button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4682b4;
+    color: #fff;
+    cursor: pointer;
+}
+
+.login-container form button:hover {
+    background-color: #35648c;
 }
 
 input[type="text"],
