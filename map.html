@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <title>Map</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body, html {
+            
             height: 100%;
-            margin: 0;
+            margin: 3px;
             font-family: 'Roboto', sans-serif;
+            background-color: #74a1c579;
         }
         #map {
             position: relative;
@@ -20,6 +22,7 @@
             background-color: #f0f0f0;
             border: 1px solid #ccc;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            background-image: url(nairobi.jpg);
         }
         .station, .user-location {
             position: absolute;
@@ -34,10 +37,10 @@
             transform: translate(-50%, -50%) scale(1.5);
         }
         .station {
-            background-color: #ff6347;
+            background-color: #1563f3;
         }
         .user-location {
-            background-color: #4682b4; 
+            background-color: #d41919; 
         }
         .path {
             position: absolute;
@@ -61,21 +64,65 @@
             opacity: 1;
             transition: opacity 0.3s ease;
         }
+        .title{
+            font-family: cursive;
+            font-size: 20px;
+            color: rgb(35, 35, 37);
+        }
+        .search-container {
+            margin-left: 40px;
+            margin-top: 7px;
+        }
+        .search-input {
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .search-button {
+            padding: 5px 10px;
+            border: none;
+            background-color: #4682b4;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .info-container {
+            margin-right:50px;
+            margin-left:30px;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .info-text {
+           
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
-<h1>Please click on your destination</h1>
+<div class="title">Hi Muthami,</div>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search destination...">
+        <button onclick="searchDestination()" class="search-button">Search</button>
+    </div>
     <div id="map">
-        <div class="user-location" style="top: 10%; left: 50%;" id="userLocation">Your current location</div>
-        <div class="station" style="top: 70%; left: 35%;" id="station1" onclick="activateStation(this, 57, 30)">
+        <div class="user-location" style="top: 9%; left: 49%;" id="userLocation"><br>Your location</div>
+        <div class="station" style="top: 38%; left: 32%;" id="station1" onclick="activateStation(this, 57, 30)">
             <div class="label" style="top: 20px; left: 0;">Kitengela</div>
         </div>
-        <div class="station" style="top:95%; left: 66%;" id="station2" onclick="activateStation(this, 73, 70)">
+        <div class="station" style="top:49%; left: 67%;" id="station2" onclick="activateStation(this, 73, 70)">
             <div class="label" style="top: 20px; left: 0;">Juja</div>
         </div>
-        <div class="station" style="top:75%; left: 50%;" id="station3" onclick="activateStation(this, 88, 50)">
+        <div class="station" style="top:60%; left: 49%;" id="station3" onclick="activateStation(this, 88, 50)">
             <div class="label" style="top: 20px; left: 0;">Ongata Rongai</div>
         </div>
+    </div>
+    <div class="info-container">
+        <div class="info-text">Distance left: <span id="distance">- km</span></div>
+        <div class="info-text">Time left: <span id="time">- mins</span></div>
     </div>
     <script>
         function activateStation(element, stationTop, stationLeft) {
@@ -83,6 +130,22 @@
             allStations.forEach(stn => stn.classList.remove('active'));
             element.classList.add('active');
             drawPath(stationTop, stationLeft);
+
+            // Predefined distances and times for each destination
+            let distance, time;
+            if (element.id === 'station1') {
+                distance = 2;
+                time = 40 ;
+            } else if (element.id === 'station2') {
+                distance = 3.4;
+                time = 68;
+            } else if (element.id === 'station3') {
+                distance = 4.7;
+                time = 94;
+            }
+
+            document.getElementById('distance').innerText = distance + ' km';
+            document.getElementById('time').innerText = time + ' minutes';
         }
 
         function drawPath(stationTop, stationLeft) {
